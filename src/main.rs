@@ -97,6 +97,19 @@ impl SemanticVersion {
         }
     }
 
+    fn panoo_string(&self) -> String {
+
+        let mut version = format!("P{}-{}", self.major, self.minor);
+        if self.patch > 0 {
+            version.push_str(&format!("-{}", self.patch));
+        }
+        if let Some(ref v) = self.ident {
+            version.push_str(&format!("-{}", v));
+        }
+        version
+        
+    }
+
 }
 
 fn version_from_string(raw_name: &str, commit: Option<&Commit>) -> Option<SemanticVersion> {
@@ -292,6 +305,11 @@ struct Args {
 
     #[arg(short, long)]
     release: bool,
+
+    /// Output panoo-style versions (P12-9)
+    #[arg(short, long)]
+    panoo: bool,
+
 }
 
 /// Make a release
@@ -436,7 +454,11 @@ fn main_result(args: Args) -> Result<(), VersionError> {
         let _ = main_release(&repo).unwrap();
     } else {
         let v = main_version(&repo)?;
-        println!("{}", v.version_string());
+        if args.panoo {
+            println!("{}", v.panoo_string());
+        } else {
+            println!("{}", v.version_string());
+        }
     }
 
     // let stats = repo.statuses(None).unwrap();
