@@ -1,0 +1,13 @@
+[package]
+name = "grelly"
+version = "1.0.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+thiserror = "1.0.50"
+git2 = "0.18.1"
+regex = "1.10.2"
+cargo_toml = "0.17.0"
+clap = { version = "4.4.8", features = ["derive"] }
